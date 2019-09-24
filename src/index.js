@@ -1,49 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-//Placeholder data for initial state
-import dummyImages from './dummy-data';
-
 //Redux
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
+import galleryReducer from './containers/HeaderBar/reducers';
 
-//Initialise the Redux Store
+//Sagas
+import createSagaMiddleware from 'redux-saga';
+import {watchLoadGallery} from './containers/HeaderBar/sagas';
 
-//Initial State to build the store with:
-const initialState = {
-    images: dummyImages
-}
+//Initialise the saga middleware
+const sagaMiddleware = createSagaMiddleware();
 
-//Basic reducer:
-function reducer (state = initialState, action){
-    switch(action.type){
-        case "ADD_IMAGE":
-            console.log("Adding a new image from reducer");
-            return Object.assign({}, state, {
-                images: [...state.images, action.payload]
-            })
-        case "DELETE_IMAGE":
-            console.log("PAYLOAD: ", action.payload);
-            const filteredImages = state.images.filter(img=>{
-                return img.id !== action.payload;
-            });
-            return Object.assign({}, state, {
-                images: filteredImages
-            })
-        default:
-            return state;
-    }
-}
+//Create the Redux store, passing in our reducer to handle state, and the sagaMiddleware to run all actions through the sagas.:
+const store = createStore(galleryReducer, applyMiddleware(sagaMiddleware));
 
-//Create the store, passing in our reducer to handle state:
-const store = createStore(reducer)
+//Pass our saga into the middleware so it runs on actions
+sagaMiddleware.run(watchLoadGallery);
 
 //Render the main app, wrapped in the provider so it can access state down through the tree.
-
+//Also wrapped in ThemeProvider so we can access the theme variables in any defined style blocks
 ReactDOM.render(
     <Provider store={store}>
         <App /> 
