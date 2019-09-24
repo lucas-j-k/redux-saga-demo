@@ -20,28 +20,17 @@ const initialState = {
 function galleryReducer (state = initialState, action){
     switch(action.type){
         case "IMAGES_LOADED":
-            console.log("Adding a new image set from reducer -- ", action.payload);
             return Object.assign({}, state, {
-                images: action.payload
+                images: action.imagesArray
             })
         case "USER_LOADED":
             const user = {
-                firstName: action.payload.name.first,
-                lastName: action.payload.name.last,
-                avatar: action.payload.picture.large
+                firstName: action.userObject.name.first,
+                lastName: action.userObject.name.last,
+                avatar: action.userObject.picture.large
             }
-            console.log("USER PAYLOAD -- ", action.payload);
-            console.log("NEW USER OBJECT -- ", user);
             return Object.assign({}, state, {
                 user
-            })
-        case "DELETE_IMAGE":
-            console.log("PAYLOAD: ", action.payload);
-            const filteredImages = state.images.filter(img=>{
-                return img.id !== action.payload;
-            });
-            return Object.assign({}, state, {
-                images: filteredImages
             })
         case "LOADING_START":
             console.log("LOADING STARTED");
@@ -51,25 +40,25 @@ function galleryReducer (state = initialState, action){
                 error: false,
                 appStarted: true
             })
-        case "ERROR":
-            console.log("LOADING ERROR OCCURRED");
+        case "LOADING_FAIL":
             return Object.assign({}, state, {
                 error: true,
-                showGallery: false
+                showGallery: false,
+                loading: false
             })
-        case "LOADING_END":
-            console.log("LOADING ENDED");
+        case "LOADING_SUCCESS":
             return Object.assign({}, state, {
                 loading: false,
                 showGallery: true,
             })
         case "TOGGLE_THEME":
-            console.log("Toggling the UI theme");
             let newTheme;
             if(state.theme === 'dark'){
                 newTheme = 'light'
             } else if(state.theme === 'light'){
                 newTheme = 'dark'
+            } else {
+                return state;
             }
             return Object.assign({}, state, {
                 theme: newTheme

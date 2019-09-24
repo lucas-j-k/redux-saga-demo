@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Ul from '../Ul';
 import Li from '../Li';
 
-
 const Introduction = props => (
     <div className={props.className}>
         <p>
@@ -21,10 +20,12 @@ const Introduction = props => (
     </div>
 );
 
-export default styled(Introduction)`
+const StyledIntroduction = styled(Introduction)`
     width: 60%;
     margin: ${props => props.theme.spacing_xl} auto;
     color: ${props => props.theme.default_text_color};
     line-height: 1.25;
     font-size: ${props => props.theme.font_lg};
-`;;
+`;
+
+export default StyledIntroduction;

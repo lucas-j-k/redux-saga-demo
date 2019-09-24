@@ -1,10 +1,9 @@
-export const imagesLoadedAction = (payload)=>{
+export const imagesLoadedAction = (imagesArray)=>{
     return {
         type: "IMAGES_LOADED",
-        payload
+        imagesArray
     }
 }
-
 
 export const fetchGalleryAction = ()=>{
     return {
@@ -12,10 +11,10 @@ export const fetchGalleryAction = ()=>{
     }
 }
 
-export const userLoadedAction = (payload)=>{
+export const userLoadedAction = (userObject)=>{
     return {
         type: "USER_LOADED",
-        payload
+        userObject
     }
 }
 
@@ -25,16 +24,15 @@ export const loadingStartAction = ()=>{
     }
 }
 
-export const loadingEndAction = ()=>{
+export const loadingSuccessAction = ()=>{
     return {
-        type: "LOADING_END"
+        type: "LOADING_SUCCESS"
     }
 }
 
-export const dispatchErrorAction = (error)=>{
+export const loadingFailAction = ()=>{
     return {
-        type: "ERROR",
-        payload: error
+        type: "LOADING_FAIL"
     }
 }
 
@@ -44,5 +42,3 @@ export const toggleThemeAction = ()=>{
     }
 }
 
-
-// export default fetchGalleryAction;

@@ -1,6 +1,12 @@
 //Redux Sagas
 import {takeEvery, delay, put, all, call} from 'redux-saga/effects';
-import {imagesLoadedAction, userLoadedAction, loadingStartAction, loadingEndAction, dispatchErrorAction} from './actionCreators';
+import {
+    imagesLoadedAction,
+    userLoadedAction, 
+    loadingStartAction, 
+    loadingSuccessAction, 
+    loadingFailAction
+} from './actionCreators';
 
 //Fetch a random user from the API
 function* fetchUser(){
@@ -15,10 +21,10 @@ function* fetchUser(){
 function* fetchImages(){
     const cachebusters = [];
     for(let i = 0; i < 6; i++){
-        const cachebuster = Math.floor(Math.random() * 10000);
-        cachebusters.push(cachebuster);
+        const randomNum = Math.floor(Math.random() * 10000);
+        cachebusters.push(randomNum);
     }
-    return yield all(cachebusters.map(num => call(fetch, `https://picsum.photos/400/400?random=${num}`)));
+    return yield all(cachebusters.map(cachebuster => call(fetch, `https://picsum.photos/400/400?random=${cachebuster}`)));
 }
 
 //Run both the above functions - first fetch the user, then the images. Artificial delay() added to test the
@@ -26,16 +32,15 @@ function* fetchImages(){
 export function* fetchGallery(){
     try {
         yield put(loadingStartAction());
-        yield delay(2500);
-        const newUser = yield fetchUser();
-        yield put(userLoadedAction(newUser))
-        const newImgs = yield fetchImages();
-        const imgSources = newImgs.map(img => img.url);
-        yield put(imagesLoadedAction(imgSources));
-        yield put(loadingEndAction());
+        yield delay(2000);
+        const fetchedUser = yield fetchUser();
+        const fetchedImgs = yield fetchImages();
+        const fetchedImgSources = fetchedImgs.map(img => img.url);
+        yield put(userLoadedAction(fetchedUser))
+        yield put(imagesLoadedAction(fetchedImgSources));
+        yield put(loadingSuccessAction());
     } catch(e){
-        yield put(loadingEndAction());
-        yield put(dispatchErrorAction(e));
+        yield put(loadingFailAction());
     }
     
 }
