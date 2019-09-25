@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
+
+//Import base reset global styles
+import './reset.css';
 
 //Redux
 import {createStore, applyMiddleware} from 'redux';

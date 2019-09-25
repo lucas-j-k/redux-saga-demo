@@ -32,7 +32,7 @@ function* fetchImages(){
 export function* fetchGallery(){
     try {
         yield put(loadingStartAction());
-        yield delay(2000);
+        yield delay(1500);
         const fetchedUser = yield fetchUser();
         const fetchedImgs = yield fetchImages();
         const fetchedImgSources = fetchedImgs.map(img => img.url);

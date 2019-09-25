@@ -1,16 +1,15 @@
 import React from 'react';
-import './reset.css';
 
 import {connect} from 'react-redux';
 import styled, {ThemeProvider} from 'styled-components';
-import {darkTheme, lightTheme} from './themes';
+import {darkTheme, lightTheme} from '../../themes';
 
-import Gallery from './containers/Gallery';
-import HeaderBar from './containers/HeaderBar';
-import AlertBox from './components/AlertBox';
-import Introduction from './components/Introduction';
+import Gallery from '../Gallery';
+import HeaderBar from '../HeaderBar';
+import AlertBox from '../../components/AlertBox';
+import Introduction from '../../components/Introduction';
 
-const MainWrapper = styled.div`
+const AppWrapper = styled.div`
   min-height: 100vh;
   background-color: ${props => props.theme.svg_bg_color};
   background-image: ${props => props.theme.svg_bg_image};
@@ -32,13 +31,13 @@ function App(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <MainWrapper>
+      <AppWrapper>
         <HeaderBar />
         {introContent}
         {galleryContent}
         {loadingBarContent}
         {errorContent}
-      </MainWrapper>
+      </AppWrapper>
     </ThemeProvider>
   );
 }
